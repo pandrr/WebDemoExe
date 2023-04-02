@@ -23,6 +23,7 @@ namespace WebDemoExe
         private void okButton_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
+
         }
 
         private void fullscreen_Toggle(object sender, RoutedEventArgs e)

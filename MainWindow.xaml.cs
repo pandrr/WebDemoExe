@@ -13,6 +13,8 @@ using System.Windows.Input;
 using System.IO;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
+using System.Runtime.Remoting.Messaging;
+using System.Xml;
 
 namespace WebDemoExe
 {
@@ -44,7 +46,45 @@ namespace WebDemoExe
         public MainWindow()
         {
             var dlg = new DemoDialog();
+
+
+            var reader = new XmlTextReader("webdemoexe.xml");
+            reader.WhitespaceHandling = WhitespaceHandling.None;
+
+
+            var currentTag = "";
+            var dialogTitle = "webDemoExe";
+
+
+            try {
+
+                while (reader.Read())
+                {
+                    switch (reader.NodeType)
+                    {
+                        case XmlNodeType.Element:
+                            Trace.Write("ele", reader.Name);
+                            currentTag = reader.Name;
+
+                            break;
+                        case XmlNodeType.Text:
+                            if (currentTag.Equals("title")) dialogTitle = reader.Value;
+                            break;
+
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                dialogTitle = "xml error";
+
+            }
+
+            dlg.Title = dialogTitle;
+
             dlg.ShowDialog();
+
 
             Environment.SetEnvironmentVariable("WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS", "--autoplay-policy=no-user-gesture-required");
             Environment.SetEnvironmentVariable("WEBVIEW2_USER_DATA_FOLDER", Path.GetTempPath());
@@ -63,14 +103,14 @@ namespace WebDemoExe
             InitializeComponent();
             AttachControlEventHandlers(webView);
 
-
-
             if((bool)dlg.Fullscreen.IsChecked)
             {
                 this.WindowStyle = WindowStyle.None;
                 this.Topmost = true;
                 this.WindowState = WindowState.Maximized;
             }
+
+            webView.Focus();
 
         }
 
@@ -86,7 +126,7 @@ namespace WebDemoExe
             control.KeyDown += WebView_KeyDown;
         }
 
- 
+
         private bool _isControlInVisualTree = true;
 
         void RemoveControlFromVisualTree(WebView2 control)
@@ -329,7 +369,7 @@ namespace WebDemoExe
             if (e.IsSuccess)
             {
                 // Setup host resource mapping for local files
-                webView.CoreWebView2.SetVirtualHostNameToFolderMapping("appassets.example", "assets", CoreWebView2HostResourceAccessKind.DenyCors);
+                webView.CoreWebView2.SetVirtualHostNameToFolderMapping("appassets.example", "demo", CoreWebView2HostResourceAccessKind.DenyCors);
                 // Set StartPage Uri
                 webView.Source = new Uri(GetStartPageUri(webView.CoreWebView2));
 

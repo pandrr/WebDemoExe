@@ -1,6 +1,7 @@
-﻿<Window x:Class="WebDemoExe.DemoDialog"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av" x:Class="WebDemoExe.DemoDialog"
         Title="WebDemoExe"
         MinHeight="200"
         MinWidth="300"
@@ -8,7 +9,7 @@
         ResizeMode="NoResize"
         ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner" 
-        FocusManager.FocusedElement="{Binding ElementName=leftMarginTextBox}">
+        FocusManager.FocusedElement="{Binding ElementName=leftMarginTextBox}" av:DesignHeight="200">
     <Grid Margin="10">
         <Grid.Resources>
             <!-- Default settings for controls -->
@@ -27,8 +28,11 @@
         </Grid.Resources>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition />
+            <ColumnDefinition Width="24.904" />
+            <ColumnDefinition Width="32.713"/>
+            <ColumnDefinition Width="63*" />
+            <ColumnDefinition Width="44*"/>
+            <ColumnDefinition Width="115*"/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -40,26 +44,14 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <!-- Left,Top,Right,Bottom margins-->
-        <Label Grid.Column="0" Grid.Row="0">Hello</Label>
-        <!--<TextBox Name="leftMarginTextBox" Grid.Column="1" Grid.Row="0" /> -->
-
-
-        <ComboBox Grid.Column="1" Grid.Row="0" Margin="0,0,0,10">
-            <ComboBoxItem>ComboBox Item #1</ComboBoxItem>
-            <ComboBoxItem IsSelected="True">ComboBox Item #2</ComboBoxItem>
-            <ComboBoxItem>ComboBox Item #3</ComboBoxItem>
-        </ComboBox>
-
-
-        <Label Grid.Column="0" Grid.Row="1">Fullscreen</Label>
-        <CheckBox Name="Fullscreen" Click="fullscreen_Toggle" Grid.Column="1" Grid.Row="1" Margin="0,3,0,22" Grid.RowSpan="4"/>
+        <Label Grid.Column="0" Grid.Row="1" Margin="0,6,5,137" Grid.RowSpan="5" Content="Fullscreen" Grid.ColumnSpan="2"/>
+        <CheckBox x:Name="Fullscreen" Click="fullscreen_Toggle" IsChecked="True" Grid.Column="2" Grid.Row="1" Margin="0,8,0,144" Grid.ColumnSpan="3" Grid.RowSpan="5"/>
 
 
         <!-- Accept or Cancel -->
-        <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Name="okButton" Click="okButton_Click" IsDefault="True">OK</Button>
-            <Button Name="cancelButton" IsCancel="True">Cancel</Button>
+        <StackPanel Grid.Column="3" Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Left" Margin="9,114,0,-4" Grid.ColumnSpan="2">
+            <Button x:Name="okButton" Click="okButton_Click" IsDefault="True" Content="OK"/>
+            <Button x:Name="cancelButton" IsCancel="True" Content="Cancel"/>
         </StackPanel>
-    </Grid >
+    </Grid>
 </Window>
