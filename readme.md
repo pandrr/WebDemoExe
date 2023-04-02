@@ -4,7 +4,7 @@
 
 wrap your web demo into a windows exe format, just like a native demo.
 
-https://github.com/pandrr/WebDemoExe/releases
+[download](https://github.com/pandrr/WebDemoExe/releases)
 
 ### about
 
