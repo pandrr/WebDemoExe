@@ -14,15 +14,16 @@ found in the LICENSE file.
         Title="MainWindow"
         Height="720"
         Width="1280"
+        Background="Black"
     >
     <Window.Resources>
     </Window.Resources>
     <Window.CommandBindings>
-    
-    </Window.CommandBindings>
-    <DockPanel>
-       
-        <Grid x:Name="Layout">
+        </Window.CommandBindings>
+
+    <DockPanel Background="Black">
+
+        <Grid x:Name="Layout" Background="Black">
             <!--
             <Grid.Background>
                 <ImageBrush ImageSource="/assets/AppStartPageBackground.png" /
@@ -34,6 +35,7 @@ found in the LICENSE file.
             -->
             <wv2:WebView2
                 x:Name="webView"
+                DefaultBackgroundColor="Black"
                 CreationProperties="{StaticResource EvergreenWebView2CreationProperties}"
                 Source="about:blank"
             />

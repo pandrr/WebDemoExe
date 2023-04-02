@@ -111,7 +111,6 @@ namespace WebDemoExe
             }
 
             webView.Focus();
-
         }
 
         void AttachControlEventHandlers(WebView2 control)
