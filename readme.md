@@ -9,7 +9,7 @@ https://github.com/pandrr/WebDemoExe/releases
 ### about
 
 - it does not use electron, size is ~0.5mb
-- it will use edge to display your demo. edge ist a chromium based browser, which is basically chrome
+- it will use edge to display your demo. edge is a chromium based browser, which is basically chrome
 - shows a little start dialog (only fullscreen option right now, more in the future hopefully)
 
 ### how
