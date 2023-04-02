@@ -17,7 +17,7 @@ wrap your web demo into a windows exe format, just like a native demo.
 - rename webdemoexe.exe to your demo name
 
 ### technical
-- webdemoexe uses webview2 and creates a virtual host from the demo subfolder to run your demo
+- webdemoexe uses [webview2](https://learn.microsoft.com/en-us/microsoft-edge/webview2/) and creates a virtual host from the demo subfolder to run your demo
 - escape to close is handled by webdemoexe
 - no gesture is needed to auto play audio, if you normally display a play button, make sure it only shows when audiocontext stats is not "running"...
 
