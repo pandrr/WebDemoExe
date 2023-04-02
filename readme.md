@@ -4,14 +4,17 @@
 
 wrap your web demo into a windows exe format, just like a native demo.
 
+https://github.com/pandrr/WebDemoExe/releases
+
+### about
+
 - it does not use electron, size is ~0.5mb
 - it will use edge to display your demo. edge ist a chromium based browser, which is basically chrome
 - shows a little start dialog (only fullscreen option right now, more in the future hopefully)
 
-
 ### how
 
-- download the zip file from the releases section https://github.com/pandrr/WebDemoExe/releases
+- download the zip file from the releases section 
 - put your static html/js files into the demo subfolder
 - edit webdemoexe.xml and change the title
 - rename webdemoexe.exe to your demo name
