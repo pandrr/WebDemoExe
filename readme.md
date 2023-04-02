@@ -9,7 +9,7 @@ wrap your web demo into a windows exe format, just like a native demo.
 
 ### how
 
-- download the zip file from the releases section
+- download the zip file from the releases section https://github.com/pandrr/WebDemoExe/releases
 - put your static html/js files into the demo subfolder
 - edit webdemoexe.xml and change the title
 - rename webdemoexe.exe to your demo name
