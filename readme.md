@@ -1,4 +1,4 @@
-![image](https://user-images.githubusercontent.com/98792/229350473-b78d5456-2386-475f-bded-229f03a396c6.png)
+![image](https://user-images.githubusercontent.com/98792/229350512-f74e4f52-9f70-4a86-874a-3cb07f25bb17.png)
 
 ## webDemoExe
 
