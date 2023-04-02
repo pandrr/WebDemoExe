@@ -8,7 +8,7 @@
     <Product>WebDemoExe</Product>
     <NoWin32Manifest>true</NoWin32Manifest>
     <Configurations>Debug;Release</Configurations>
-    <ApplicationIcon>icon_cables.ico</ApplicationIcon>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Platform)'=='x64'">
     <PlatformTarget>x64</PlatformTarget>
@@ -20,7 +20,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="icon_cables.ico" />
+    <Content Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1724-prerelease" />
