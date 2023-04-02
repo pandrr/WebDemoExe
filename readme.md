@@ -20,6 +20,7 @@ https://github.com/pandrr/WebDemoExe/releases
 - rename webdemoexe.exe to your demo name
 
 ### technical
+- exe is not signed, still have to click "run anyway", like with most demos
 - webdemoexe uses [webview2](https://learn.microsoft.com/en-us/microsoft-edge/webview2/) and creates a virtual host from the demo subfolder to run your demo
 - escape to close is handled by webdemoexe
 - no gesture is needed to auto play audio, if you normally display a play button, make sure it only shows when audiocontext stats is not "running"...
