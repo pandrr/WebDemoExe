@@ -28,6 +28,7 @@ wrap your web demo into a windows exe format, just like a native demo.
 ### ideas
 - currently has no resolution selection, not sure how this is possible with wpf etc.
 - in the future the dialog could show link to website/online version and maybe a little teaser image...
+- there should be way to exit the app from js / in electron we always used `window.close()` not possible with webview2 afaik
 
 ### misc
 
