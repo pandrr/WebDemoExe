@@ -37,6 +37,7 @@ found in the LICENSE file.
                 x:Name="webView"
                 DefaultBackgroundColor="Black"
                 CreationProperties="{StaticResource EvergreenWebView2CreationProperties}"
+                SourceChanged="sourceChanged"
                 Source="about:blank"
             />
             <!-- The control event handlers are set in code behind so they can be reused when replacing the control after

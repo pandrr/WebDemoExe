@@ -103,7 +103,7 @@ namespace WebDemoExe
             InitializeComponent();
             AttachControlEventHandlers(webView);
 
-            if((bool)dlg.Fullscreen.IsChecked)
+            if ((bool)dlg.Fullscreen.IsChecked)
             {
                 this.WindowStyle = WindowStyle.None;
                 this.Topmost = true;
@@ -158,7 +158,7 @@ namespace WebDemoExe
             {
                 replacementControl.CreationProperties = webView.CreationProperties;
             }
-            
+
             AttachControlEventHandlers(replacementControl);
             replacementControl.Source = webView.Source ?? new Uri("https://www.bing.com");
             ((System.ComponentModel.ISupportInitialize)(replacementControl)).EndInit();
@@ -259,7 +259,7 @@ namespace WebDemoExe
             }
         }
 
-   
+
         void WebView_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.IsRepeat) return;
@@ -269,30 +269,30 @@ namespace WebDemoExe
                 Close();
             }
 
-/*            bool ctrl = e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl);
-            bool alt = e.KeyboardDevice.IsKeyDown(Key.LeftAlt) || e.KeyboardDevice.IsKeyDown(Key.RightAlt);
-            bool shift = e.KeyboardDevice.IsKeyDown(Key.LeftShift) || e.KeyboardDevice.IsKeyDown(Key.RightShift);
-*/            /*
-            if (e.Key == Key.N && ctrl && !alt && !shift)
-            {
-                new MainWindow().Show();
-                e.Handled = true;
-            }
-            else if (e.Key == Key.W && ctrl && !alt && !shift)
-            {
-                Close();
-                e.Handled = true;
-            }
-            */
+            /*            bool ctrl = e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl);
+                        bool alt = e.KeyboardDevice.IsKeyDown(Key.LeftAlt) || e.KeyboardDevice.IsKeyDown(Key.RightAlt);
+                        bool shift = e.KeyboardDevice.IsKeyDown(Key.LeftShift) || e.KeyboardDevice.IsKeyDown(Key.RightShift);
+            */            /*
+                        if (e.Key == Key.N && ctrl && !alt && !shift)
+                        {
+                            new MainWindow().Show();
+                            e.Handled = true;
+                        }
+                        else if (e.Key == Key.W && ctrl && !alt && !shift)
+                        {
+                            Close();
+                            e.Handled = true;
+                        }
+                        */
         }
 
         void WebView_NavigationStarting(object sender, CoreWebView2NavigationStartingEventArgs e)
-        {         
+        {
             RequeryCommands();
         }
 
         void WebView_NavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
-        {            
+        {
             RequeryCommands();
         }
 
@@ -300,8 +300,8 @@ namespace WebDemoExe
 
         private string GetSdkBuildVersion()
         {
-                       CoreWebView2EnvironmentOptions options = new CoreWebView2EnvironmentOptions();
-            
+            CoreWebView2EnvironmentOptions options = new CoreWebView2EnvironmentOptions();
+
             // The full version string A.B.C.D
             var targetVersionMajorAndRest = options.TargetCompatibleBrowserVersion;
             var versionList = targetVersionMajorAndRest.Split('.');
@@ -409,7 +409,7 @@ namespace WebDemoExe
                     }
                     catch (NotImplementedException)
                     {
-                        
+
                     }
                     shouldAttachEnvironmentEventHandlers = false;
                 }
@@ -460,7 +460,7 @@ namespace WebDemoExe
             if (frameToRemove != null)
                 _webViewFrames.Remove(frameToRemove);
         }
-     
+
         // <NewBrowserVersionAvailable>
         // A new version of the WebView2 Runtime is available, our handler gets called.
         // We close our WebView and set a handler to reinitialize it once the WebView2
@@ -518,6 +518,16 @@ namespace WebDemoExe
             RemoveControlFromVisualTree(webView);
             webView.Dispose();
         }
+
+
+
+
+        private void sourceChanged(object sender, CoreWebView2SourceChangedEventArgs e)
+        {
+
+            if (webView.Source.AbsoluteUri.Contains("webdemoexe_exit")) Close();
+        }
+
 
         void RequeryCommands()
         {
