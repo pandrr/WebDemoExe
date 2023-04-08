@@ -9,7 +9,7 @@
         ResizeMode="NoResize"
         ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner" 
-        FocusManager.FocusedElement="{Binding ElementName=leftMarginTextBox}" av:DesignHeight="200">
+        FocusManager.FocusedElement="{Binding ElementName=leftMarginTextBox}" av:DesignWidth="310.039" Height="95">
     <Grid Margin="10">
         <Grid.Resources>
             <!-- Default settings for controls -->
@@ -44,14 +44,15 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="0" Grid.Row="1" Margin="0,6,5,137" Grid.RowSpan="5" Content="Fullscreen" Grid.ColumnSpan="2"/>
-        <CheckBox x:Name="Fullscreen" Click="fullscreen_Toggle" IsChecked="True" Grid.Column="2" Grid.Row="1" Margin="0,8,0,144" Grid.ColumnSpan="3" Grid.RowSpan="5"/>
+        <Label Grid.Column="0" Grid.Row="1" Margin="0,150,5,-7" Grid.RowSpan="5" Content="Fullscreen" Grid.ColumnSpan="2"/>
+        <CheckBox x:Name="Fullscreen" Click="fullscreen_Toggle" IsChecked="True" Grid.Column="2" Grid.Row="1" Margin="0,152,0,0" Grid.ColumnSpan="3" Grid.RowSpan="5" HorizontalAlignment="Right" Width="232"/>
 
 
         <!-- Accept or Cancel -->
-        <StackPanel Grid.Column="3" Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Left" Margin="9,114,0,-4" Grid.ColumnSpan="2">
+        <StackPanel Grid.Column="3" Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Margin="0,0,0,2">
             <Button x:Name="okButton" Click="okButton_Click" IsDefault="True" Content="OK"/>
             <Button x:Name="cancelButton" IsCancel="True" Content="Cancel"/>
         </StackPanel>
+        <Image Grid.ColumnSpan="5" Margin="-7,6,3,56" Grid.Row="5" Source="/mfx.png" Stretch="None"/>
     </Grid>
 </Window>

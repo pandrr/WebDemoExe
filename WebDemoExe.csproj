@@ -20,7 +20,13 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="mfx.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="icon.ico" />
+    <Content Include="mfx.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1724-prerelease" />
