@@ -19,6 +19,8 @@ wrap your web demo into a windows exe format, just like a native demo.
 - edit webdemoexe.xml and change the title
 - rename webdemoexe.exe to your demo name
 
+- if the url contains "webdemoexe_exit" it will exit, e.g. use window.location.hash="webdemoexe_exit"
+
 ### technical
 - exe is not signed, still have to click "run anyway", like with most demos
 - webdemoexe uses [webview2](https://learn.microsoft.com/en-us/microsoft-edge/webview2/) and creates a virtual host from the demo subfolder to run your demo
