@@ -51,12 +51,12 @@ namespace WebDemoExe
             var reader = new XmlTextReader("webdemoexe.xml");
             reader.WhitespaceHandling = WhitespaceHandling.None;
 
-
             var currentTag = "";
             var dialogTitle = "webDemoExe";
+            var autostart = false;
 
-
-            try {
+            try
+            {
 
                 while (reader.Read())
                 {
@@ -65,10 +65,11 @@ namespace WebDemoExe
                         case XmlNodeType.Element:
                             Trace.Write("ele", reader.Name);
                             currentTag = reader.Name;
-
                             break;
+
                         case XmlNodeType.Text:
                             if (currentTag.Equals("title")) dialogTitle = reader.Value;
+                            if (currentTag.Equals("autostart")) autostart = true;
                             break;
 
                     }
@@ -81,22 +82,25 @@ namespace WebDemoExe
 
             }
 
-            dlg.Title = dialogTitle;
-
-            dlg.ShowDialog();
-
-
-            Environment.SetEnvironmentVariable("WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS", "--autoplay-policy=no-user-gesture-required");
-            Environment.SetEnvironmentVariable("WEBVIEW2_USER_DATA_FOLDER", Path.GetTempPath());
-
-            if (dlg.DialogResult == true)
+            if (autostart)
             {
-                Trace.WriteLine("text3");
-            }
-            else
-            {
-                Close();
-                return;
+                dlg.Title = dialogTitle;
+
+                dlg.ShowDialog();
+
+
+                Environment.SetEnvironmentVariable("WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS", "--autoplay-policy=no-user-gesture-required");
+                Environment.SetEnvironmentVariable("WEBVIEW2_USER_DATA_FOLDER", Path.GetTempPath());
+
+                if (dlg.DialogResult == true)
+                {
+                    Trace.WriteLine("text3");
+                }
+                else
+                {
+                    Close();
+                    return;
+                }
             }
 
             DataContext = this;
