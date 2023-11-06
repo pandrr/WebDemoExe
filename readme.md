@@ -18,6 +18,7 @@ wrap your web demo into a windows exe format, just like a native demo.
 - put your static html/js files into the demo subfolder
 - edit webdemoexe.xml and change the title
 - rename webdemoexe.exe to your demo name
+- add `<autostart/>` into the config to not show the dialog at all and start directly
 
 - if the url contains "webdemoexe_exit" it will exit, e.g. use window.location.hash="webdemoexe_exit"
 
