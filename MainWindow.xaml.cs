@@ -98,7 +98,7 @@ namespace WebDemoExe
                 }
                 else
                 {
-                    Close();
+                    closeExe();
                     return;
                 }
             }
@@ -270,7 +270,7 @@ namespace WebDemoExe
 
             if (e.KeyboardDevice.IsKeyDown(Key.Escape))
             {
-                Close();
+                closeExe();
             }
 
             /*            bool ctrl = e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl);
@@ -284,7 +284,7 @@ namespace WebDemoExe
                         }
                         else if (e.Key == Key.W && ctrl && !alt && !shift)
                         {
-                            Close();
+                            closeExe();
                             e.Handled = true;
                         }
                         */
@@ -427,7 +427,7 @@ namespace WebDemoExe
             if (e.InitializationException.HResult == -2147024593)
             {
                 MessageBox.Show($"Failed to create webview, because the profile's name has been marked as deleted, please use a different profile's name.");
-                Close();
+                closeExe();
                 return;
             }
             MessageBox.Show($"WebView2 creation failed with exception = {e.InitializationException}");
@@ -529,7 +529,7 @@ namespace WebDemoExe
         private void sourceChanged(object sender, CoreWebView2SourceChangedEventArgs e)
         {
 
-            if (webView.Source.AbsoluteUri.Contains("webdemoexe_exit")) Close();
+            if (webView.Source.AbsoluteUri.Contains("webdemoexe_exit")) closeExe();
         }
 
 
@@ -567,6 +567,13 @@ namespace WebDemoExe
         }
         // </OnPermissionRequested>
 
-   
+
+        void closeExe()
+        {
+            webView.Source = new Uri("about:blank");
+            webView.Dispose();
+            Close();
+            System.Environment.Exit(1);
+        }
     }
 }
