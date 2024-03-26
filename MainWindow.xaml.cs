@@ -82,7 +82,9 @@ namespace WebDemoExe
 
             }
 
-            if (autostart)
+            
+
+            if (autostart==false)
             {
                 dlg.Title = dialogTitle;
 
@@ -94,7 +96,6 @@ namespace WebDemoExe
 
                 if (dlg.DialogResult == true)
                 {
-                    Trace.WriteLine("text3");
                 }
                 else
                 {
