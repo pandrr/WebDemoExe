@@ -103,7 +103,7 @@ namespace WebDemoExe
 
 
                 Environment.SetEnvironmentVariable("WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS", "--autoplay-policy=no-user-gesture-required");
-                Environment.SetEnvironmentVariable("WEBVIEW2_USER_DATA_FOLDER", Path.GetTempPath());
+                Environment.SetEnvironmentVariable("WEBVIEW2_USER_DATA_FOLDER", Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()));
 
                 if (dlg.DialogResult == true)
                 {
@@ -117,6 +117,7 @@ namespace WebDemoExe
 
             DataContext = this;
             InitializeComponent();
+            this.Closing += Window_Closing;
             AttachControlEventHandlers(webView);
 
             if ((bool)dlg.Fullscreen.IsChecked)
@@ -463,6 +464,11 @@ namespace WebDemoExe
         }
         // </BrowserProcessExited>
 
+        void Window_Closing(object sender, CancelEventArgs e)
+        {
+            closeExe(false);
+        }
+
         void WebView_HandleIFrames(object sender, CoreWebView2FrameCreatedEventArgs args)
         {
             _webViewFrames.Add(args.Frame);
@@ -577,13 +583,36 @@ namespace WebDemoExe
         }
         // </OnPermissionRequested>
 
-
-        void closeExe()
+        void closeExe(bool closeWindow = true)
         {
-            webView.Source = new Uri("about:blank");
-            webView.Dispose();
-            Close();
-            System.Environment.Exit(1);
+            try
+            {
+                if (webView != null)
+                {
+                    webView.Source = new Uri("about:blank");
+                    
+                    var webViewProcess = Process.GetProcessById(Convert.ToInt32(webView.CoreWebView2.BrowserProcessId));
+                    var webViewUserDataFolder = webView.CoreWebView2.Environment.UserDataFolder;
+
+                    webView.Dispose();
+                    webViewProcess.Kill();
+                    if (webViewProcess.WaitForExit(5000))
+                    {
+                        Directory.Delete(webViewUserDataFolder, true);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show($"Application close raised an exception = {e.Message}");
+            }
+
+            Closing -= Window_Closing;
+            if (closeWindow)
+            {
+                Close();
+                System.Environment.Exit(1);
+            }
         }
     }
 }
