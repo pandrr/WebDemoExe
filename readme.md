@@ -26,6 +26,7 @@ wrap your web demo into a windows exe format, just like a native demo.
 - exe is not signed, still have to click "run anyway", like with most demos
 - webdemoexe uses [webview2](https://learn.microsoft.com/en-us/microsoft-edge/webview2/) and creates a virtual host from the demo subfolder to run your demo
 - escape to close is handled by webdemoexe
+  - if you need to handle escape key manually, add `<propagatekeys/>` in the config.
 - no gesture is needed to auto play audio, if you normally display a play button, make sure it only shows when audiocontext stats is not "running"...
 
 ### ideas

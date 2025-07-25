@@ -42,6 +42,7 @@ namespace WebDemoExe
         IDictionary<(string, CoreWebView2PermissionKind, bool), bool> _cachedPermissions =
             new Dictionary<(string, CoreWebView2PermissionKind, bool), bool>();
 
+        bool _propagateKeys = false;
 
         public MainWindow()
         {
@@ -65,13 +66,19 @@ namespace WebDemoExe
                         case XmlNodeType.Element:
                             Trace.Write("ele", reader.Name);
                             currentTag = reader.Name;
+                            
+                            if (reader.IsEmptyElement)
+                            {
+                                if (currentTag.Equals("autostart")) autostart = true;
+                                if (currentTag.Equals("propagatekeys")) _propagateKeys = true;
+                            }
                             break;
 
                         case XmlNodeType.Text:
                             if (currentTag.Equals("title")) dialogTitle = reader.Value;
-                            if (currentTag.Equals("autostart")) autostart = true;
+                            if (currentTag.Equals("autostart")) autostart = XmlConvert.ToBoolean(reader.Value);
+                            if (currentTag.Equals("propagatekeys")) _propagateKeys = XmlConvert.ToBoolean(reader.Value);
                             break;
-
                     }
                 }
 
@@ -267,7 +274,7 @@ namespace WebDemoExe
 
         void WebView_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.IsRepeat) return;
+            if (e.IsRepeat || _propagateKeys) return;
 
             if (e.KeyboardDevice.IsKeyDown(Key.Escape))
             {
