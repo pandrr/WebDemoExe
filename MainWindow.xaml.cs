@@ -103,7 +103,7 @@ namespace WebDemoExe
 
 
                 Environment.SetEnvironmentVariable("WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS", "--autoplay-policy=no-user-gesture-required");
-                Environment.SetEnvironmentVariable("WEBVIEW2_USER_DATA_FOLDER", Path.GetTempPath());
+                Environment.SetEnvironmentVariable("WEBVIEW2_USER_DATA_FOLDER", Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()));
 
                 if (dlg.DialogResult == true)
                 {
@@ -117,6 +117,7 @@ namespace WebDemoExe
 
             DataContext = this;
             InitializeComponent();
+            this.Closing += Window_Closing;
             AttachControlEventHandlers(webView);
 
             if ((bool)dlg.Fullscreen.IsChecked)
@@ -463,6 +464,11 @@ namespace WebDemoExe
         }
         // </BrowserProcessExited>
 
+        void Window_Closing(object sender, CancelEventArgs e)
+        {
+            closeExe(false);
+        }
+
         void WebView_HandleIFrames(object sender, CoreWebView2FrameCreatedEventArgs args)
         {
             _webViewFrames.Add(args.Frame);
@@ -577,13 +583,107 @@ namespace WebDemoExe
         }
         // </OnPermissionRequested>
 
-
-        void closeExe()
+        void closeExe(bool closeWindow = true)
         {
-            webView.Source = new Uri("about:blank");
-            webView.Dispose();
-            Close();
-            System.Environment.Exit(1);
+            string userDataFolder = null;
+            Process webViewProcess = null;
+            
+            try
+            {
+                if (webView?.CoreWebView2 != null)
+                {
+                    try
+                    {
+                        userDataFolder = webView.CoreWebView2.Environment?.UserDataFolder;
+                        
+                        var processId = webView.CoreWebView2.BrowserProcessId;
+                        if (processId > 0)
+                        {
+                            webViewProcess = Process.GetProcessById(Convert.ToInt32(processId));
+                        }
+                        
+                        webView.Source = new Uri("about:blank");
+                    }
+                    catch (Exception ex)
+                    {
+                        Trace.TraceError($"Error preparing WebView cleanup: {ex.Message}");
+                    }
+                }
+
+                if (webView != null)
+                {
+                    try
+                    {
+                        webView.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        Trace.TraceError($"Error disposing WebView: {ex.Message}");
+                    }
+                    webView = null;
+                }
+
+                if (webViewProcess != null && !webViewProcess.HasExited)
+                {
+                    try
+                    {
+                        webViewProcess.CloseMainWindow();
+                        if (!webViewProcess.WaitForExit(3000))
+                        {
+                            webViewProcess.Kill();
+                            webViewProcess.WaitForExit(2000);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Trace.TraceError($"Error terminating WebView process: {ex.Message}");
+                    }
+                    finally
+                    {
+                        webViewProcess?.Dispose();
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(userDataFolder) && Directory.Exists(userDataFolder))
+                {
+                    try
+                    {
+                        var tempPath = Path.GetTempPath();
+                        if (userDataFolder.StartsWith(tempPath, StringComparison.OrdinalIgnoreCase))
+                        {
+                            Directory.Delete(userDataFolder, true);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Trace.TraceWarning($"Error cleaning user data folder: {ex.Message}");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError($"Critical error during application close: {e.Message}");
+                if (closeWindow)
+                {
+                    MessageBox.Show($"Application encountered an error during shutdown: {e.Message}", 
+                                   "Shutdown Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+
+            try
+            {
+                Closing -= Window_Closing;
+                if (closeWindow)
+                {
+                    Close();
+                    System.Environment.Exit(0);
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError($"Error during final window close: {ex.Message}");
+                System.Environment.Exit(1);
+            }
         }
     }
 }
