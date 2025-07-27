@@ -64,7 +64,6 @@ namespace WebDemoExe
                     switch (reader.NodeType)
                     {
                         case XmlNodeType.Element:
-                            Trace.Write("ele", reader.Name);
                             currentTag = reader.Name;
                             
                             if (reader.IsEmptyElement)
