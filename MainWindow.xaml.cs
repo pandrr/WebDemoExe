@@ -42,13 +42,15 @@ namespace WebDemoExe
         IDictionary<(string, CoreWebView2PermissionKind, bool), bool> _cachedPermissions =
             new Dictionary<(string, CoreWebView2PermissionKind, bool), bool>();
 
+        bool _propagateKeys = false;
 
         public MainWindow()
         {
             var dlg = new DemoDialog();
 
 
-            var reader = new XmlTextReader("webdemoexe.xml");
+            var configFile = "webdemoexe.xml";
+            var reader = new XmlTextReader(configFile);
             reader.WhitespaceHandling = WhitespaceHandling.None;
 
             var currentTag = "";
@@ -63,15 +65,20 @@ namespace WebDemoExe
                     switch (reader.NodeType)
                     {
                         case XmlNodeType.Element:
-                            Trace.Write("ele", reader.Name);
                             currentTag = reader.Name;
+                            
+                            if (reader.IsEmptyElement)
+                            {
+                                if (currentTag.Equals("autostart")) autostart = true;
+                                if (currentTag.Equals("propagatekeys")) _propagateKeys = true;
+                            }
                             break;
 
                         case XmlNodeType.Text:
                             if (currentTag.Equals("title")) dialogTitle = reader.Value;
-                            if (currentTag.Equals("autostart")) autostart = true;
+                            if (currentTag.Equals("autostart")) autostart = XmlConvert.ToBoolean(reader.Value);
+                            if (currentTag.Equals("propagatekeys")) _propagateKeys = XmlConvert.ToBoolean(reader.Value);
                             break;
-
                     }
                 }
 
@@ -80,6 +87,7 @@ namespace WebDemoExe
             {
                 dialogTitle = "xml error";
 
+                MessageBox.Show($"Could not parse {configFile}: {dialogTitle}: {e.Message}");
             }
 
             
@@ -267,7 +275,7 @@ namespace WebDemoExe
 
         void WebView_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.IsRepeat) return;
+            if (e.IsRepeat || _propagateKeys) return;
 
             if (e.KeyboardDevice.IsKeyDown(Key.Escape))
             {
