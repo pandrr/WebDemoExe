@@ -19,6 +19,7 @@ wrap your web demo into a windows exe format, just like a native demo.
 - edit webdemoexe.xml and change the title
 - rename webdemoexe.exe to your demo name
 - add `<autostart/>` into the config to not show the dialog at all and start directly, don't do this if you want to play audio without having another user interaction!
+- add `<domain>yourdomain.localhost</domain>` to customize the virtual host domain (defaults to webdemoexe.localhost)
 
 - if the url contains "webdemoexe_exit" it will exit, e.g. use window.location.hash="webdemoexe_exit"
 
