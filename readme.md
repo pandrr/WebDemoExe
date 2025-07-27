@@ -2,6 +2,8 @@
 
 ## webDemoExe
 
+[![Build](https://github.com/pandrr/WebDemoExe/actions/workflows/build.yml/badge.svg)](https://github.com/pandrr/WebDemoExe/actions/workflows/build.yml)
+
 wrap your web demo into a windows exe format, just like a native demo.
 
 [download](https://github.com/pandrr/WebDemoExe/releases)
