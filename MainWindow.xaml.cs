@@ -49,7 +49,8 @@ namespace WebDemoExe
             var dlg = new DemoDialog();
 
 
-            var reader = new XmlTextReader("webdemoexe.xml");
+            var configFile = "webdemoexe.xml";
+            var reader = new XmlTextReader(configFile);
             reader.WhitespaceHandling = WhitespaceHandling.None;
 
             var currentTag = "";
@@ -86,6 +87,7 @@ namespace WebDemoExe
             {
                 dialogTitle = "xml error";
 
+                MessageBox.Show($"Could not parse {configFile}: {dialogTitle}: {e.Message}");
             }
 
             
