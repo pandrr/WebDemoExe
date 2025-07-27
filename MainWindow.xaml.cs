@@ -23,6 +23,8 @@ namespace WebDemoExe
     /// </summary>
     public partial class MainWindow : Window
     {
+        private string _appDomain = "webdemoexe.localhost";
+        
         CoreWebView2Environment _webViewEnvironment;
         CoreWebView2Environment WebViewEnvironment
         {
@@ -76,6 +78,7 @@ namespace WebDemoExe
 
                         case XmlNodeType.Text:
                             if (currentTag.Equals("title")) dialogTitle = reader.Value;
+                            if (currentTag.Equals("domain")) _appDomain = reader.Value;
                             if (currentTag.Equals("autostart")) autostart = XmlConvert.ToBoolean(reader.Value);
                             if (currentTag.Equals("propagatekeys")) _propagateKeys = XmlConvert.ToBoolean(reader.Value);
                             break;
@@ -220,9 +223,7 @@ namespace WebDemoExe
 
             bool IsAppContentUri(Uri source)
             {
-                // Sample virtual host name for the app's content.
-                // See CoreWebView2.SetVirtualHostNameToFolderMapping: https://learn.microsoft.com/dotnet/api/microsoft.web.webview2.core.corewebview2.setvirtualhostnametofoldermapping
-                return source.Host == "appassets.example";
+                return source.Host == _appDomain;
             }
 
             if (e.ProcessFailedKind == CoreWebView2ProcessFailedKind.FrameRenderProcessExited)
@@ -362,7 +363,7 @@ namespace WebDemoExe
 
         private string GetStartPageUri(CoreWebView2 webView2)
         {
-            string uri = "https://appassets.example/index.html";
+            string uri = $"https://{_appDomain}/index.html";
             if (webView2 == null)
             {
                 return uri;
@@ -381,7 +382,7 @@ namespace WebDemoExe
             if (e.IsSuccess)
             {
                 // Setup host resource mapping for local files
-                webView.CoreWebView2.SetVirtualHostNameToFolderMapping("appassets.example", "demo", CoreWebView2HostResourceAccessKind.DenyCors);
+                webView.CoreWebView2.SetVirtualHostNameToFolderMapping(_appDomain, "demo", CoreWebView2HostResourceAccessKind.DenyCors);
                 // Set StartPage Uri
                 webView.Source = new Uri(GetStartPageUri(webView.CoreWebView2));
 
