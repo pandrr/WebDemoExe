@@ -585,33 +585,104 @@ namespace WebDemoExe
 
         void closeExe(bool closeWindow = true)
         {
+            string userDataFolder = null;
+            Process webViewProcess = null;
+            
             try
             {
+                if (webView?.CoreWebView2 != null)
+                {
+                    try
+                    {
+                        userDataFolder = webView.CoreWebView2.Environment?.UserDataFolder;
+                        
+                        var processId = webView.CoreWebView2.BrowserProcessId;
+                        if (processId > 0)
+                        {
+                            webViewProcess = Process.GetProcessById(Convert.ToInt32(processId));
+                        }
+                        
+                        webView.Source = new Uri("about:blank");
+                    }
+                    catch (Exception ex)
+                    {
+                        Trace.TraceError($"Error preparing WebView cleanup: {ex.Message}");
+                    }
+                }
+
                 if (webView != null)
                 {
-                    webView.Source = new Uri("about:blank");
-                    
-                    var webViewProcess = Process.GetProcessById(Convert.ToInt32(webView.CoreWebView2.BrowserProcessId));
-                    var webViewUserDataFolder = webView.CoreWebView2.Environment.UserDataFolder;
-
-                    webView.Dispose();
-                    webViewProcess.Kill();
-                    if (webViewProcess.WaitForExit(5000))
+                    try
                     {
-                        Directory.Delete(webViewUserDataFolder, true);
+                        webView.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        Trace.TraceError($"Error disposing WebView: {ex.Message}");
+                    }
+                    webView = null;
+                }
+
+                if (webViewProcess != null && !webViewProcess.HasExited)
+                {
+                    try
+                    {
+                        webViewProcess.CloseMainWindow();
+                        if (!webViewProcess.WaitForExit(3000))
+                        {
+                            webViewProcess.Kill();
+                            webViewProcess.WaitForExit(2000);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Trace.TraceError($"Error terminating WebView process: {ex.Message}");
+                    }
+                    finally
+                    {
+                        webViewProcess?.Dispose();
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(userDataFolder) && Directory.Exists(userDataFolder))
+                {
+                    try
+                    {
+                        var tempPath = Path.GetTempPath();
+                        if (userDataFolder.StartsWith(tempPath, StringComparison.OrdinalIgnoreCase))
+                        {
+                            Directory.Delete(userDataFolder, true);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Trace.TraceWarning($"Error cleaning user data folder: {ex.Message}");
                     }
                 }
             }
             catch (Exception e)
             {
-                MessageBox.Show($"Application close raised an exception = {e.Message}");
+                Trace.TraceError($"Critical error during application close: {e.Message}");
+                if (closeWindow)
+                {
+                    MessageBox.Show($"Application encountered an error during shutdown: {e.Message}", 
+                                   "Shutdown Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
 
-            Closing -= Window_Closing;
-            if (closeWindow)
+            try
             {
-                Close();
-                System.Environment.Exit(0);
+                Closing -= Window_Closing;
+                if (closeWindow)
+                {
+                    Close();
+                    System.Environment.Exit(0);
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError($"Error during final window close: {ex.Message}");
+                System.Environment.Exit(1);
             }
         }
     }
